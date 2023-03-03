@@ -15,6 +15,7 @@
 #include "VertexBufferLayout.h"
 #include "IndexBuffer.h"
 #include "Texture.h"
+#include "Camera.h"
 
 
 static int width = 800;
@@ -46,72 +47,72 @@ GLuint indices[] =
 
 int main()
 {
-    glfwInit();
+	glfwInit();
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    GLFWwindow* window = glfwCreateWindow(width, height, "Practice OpenGL", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(width, height, "Practice OpenGL", NULL, NULL);
 
-    if (window == NULL)
-    {
-        std::cout << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
+	if (window == NULL)
+	{
+		std::cout << "Failed to create GLFW window" << std::endl;
+		glfwTerminate();
+		return -1;
+	}
 
 	glfwMakeContextCurrent(window);
 
-    gladLoadGL();
+	gladLoadGL();
 
-    glViewport(0, 0, width, height);
+	glViewport(0, 0, width, height);
 
 	GLCall(glEnable(GL_BLEND));
 	GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 	GLCall(glBlendEquation(GL_FUNC_ADD));
-    {
-        Shader shaderProgram("res/shaders/Basic.vert.shader", "res/shaders/Basic.frag.shader");
+	{
+		Shader shaderProgram("res/shaders/Basic.vert.shader", "res/shaders/Basic.frag.shader");
 
-        VertexArray va;
-        VertexBuffer vb(sizeof(vertices), vertices, GL_STATIC_DRAW);
-        VertexBufferLayout layout;
+		VertexArray va;
+		VertexBuffer vb(sizeof(vertices), vertices, GL_STATIC_DRAW);
+		VertexBufferLayout layout;
 		layout.Push(GL_FLOAT, 3, GL_FALSE);
 		layout.Push(GL_FLOAT, 3, GL_FALSE);
 		layout.Push(GL_FLOAT, 2, GL_FALSE);
-        va.AddBuffer(vb, layout);
+		va.AddBuffer(vb, layout);
 
 
-        IndexBuffer ib(sizeof(indices), indices, GL_STATIC_DRAW);
+		IndexBuffer ib(sizeof(indices), indices, GL_STATIC_DRAW);
 
-        va.Unbind();
-        vb.Unbind();
-        ib.Unbind();
+		va.Unbind();
+		vb.Unbind();
+		ib.Unbind();
 
-        Texture texture("res/textures/brick.png", GL_TEXTURE_2D, GL_RGBA, GL_UNSIGNED_BYTE);
-        texture.TexUnit(shaderProgram, "tex0", 0);
+		Texture texture("res/textures/brick.png", GL_TEXTURE_2D, GL_RGBA, GL_UNSIGNED_BYTE);
+		texture.TexUnit(shaderProgram, "tex0", 0);
 
 
-        // Enables the Depth Buffer
-        glEnable(GL_DEPTH_TEST);
+		Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
+
+
+		// Enables the Depth Buffer
+		glEnable(GL_DEPTH_TEST);
 
 
 		// Variables that help the rotation of the pyramid
 		float rotation = 0.0f;
 		double rotationStep = 0.2f;
 
-        float scale = 0.5f;
-        float scaleStep = 0.001f;
-        while (!glfwWindowShouldClose(window))
-        {
-            GLCall(glClearColor(0.07f, 0.19f, 0.28f, 1.0f));
-            GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+		float scale = 0.5f;
+		float scaleStep = 0.001f;
+		while (!glfwWindowShouldClose(window))
+		{
+			GLCall(glClearColor(0.07f, 0.19f, 0.28f, 1.0f));
+			GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
-            shaderProgram.Bind();
-            shaderProgram.SetUniform1f("scale", scale);
-            scale += scaleStep;
-            if (scale > 1.0f || scale < 0.5f)
-                scaleStep *= -1.0f;
+			shaderProgram.Bind();
+			shaderProgram.SetUniform1f("scale", scale);
 
 			// Simple timer
 			rotation += rotationStep;
@@ -123,29 +124,27 @@ int main()
 
 			// Assigns different transformations to each matrix
 			model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 1.0f, 0.0f));
-			view = glm::translate(view, glm::vec3(0.0f, -0.5f, -2.0f));
-			proj = glm::perspective(glm::radians(45.0f), (float)width / height, 0.1f, 100.0f);
+			shaderProgram.SetUniformMat4f("model", model);
 
-            shaderProgram.SetUniformMat4f("model", model);
-            shaderProgram.SetUniformMat4f("view", view);
-            shaderProgram.SetUniformMat4f("proj", proj);
+			camera.Input(window);
+			camera.Use(shaderProgram, "camMatrix");
 
 
-            va.Bind();
-            texture.Bind();
+			texture.Bind();
+			va.Bind();
 
-            glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(int), GL_UNSIGNED_INT, 0);
+			glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(int), GL_UNSIGNED_INT, 0);
 
 
-            GLCall(glfwSwapBuffers(window));
+			GLCall(glfwSwapBuffers(window));
 
-            GLCall(glfwPollEvents());
-        }
-    }
+			GLCall(glfwPollEvents());
+		}
+	}
 
-    glfwDestroyWindow(window);
+	glfwDestroyWindow(window);
 
-    glfwTerminate();
+	glfwTerminate();
 
 	return 0;
 }

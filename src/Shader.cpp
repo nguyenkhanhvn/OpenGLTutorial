@@ -24,7 +24,7 @@ Shader::Shader(const char* vertexShaderPath, const char* fragmentShaderPath):
 
 Shader::~Shader()
 {
-
+	glDeleteProgram(Id);
 }
 
 void Shader::Bind() const
