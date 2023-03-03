@@ -39,11 +39,11 @@ void Camera::Input(GLFWwindow* window)
 	}
 	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
 	{
-		Position += Speed * Up;
+		Position += Speed * -Up;
 	}
 	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
 	{
-		Position += Speed * -Up;
+		Position += Speed * Up;
 	}
 
 	// Handles mouse inputs

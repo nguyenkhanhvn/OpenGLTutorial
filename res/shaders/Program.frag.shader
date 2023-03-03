@@ -114,14 +114,25 @@ out vec4 FragColor;
 
 
 // Inputs the color from the Vertex Shader
-in vec3 color;
 in vec2 texCoord;
+in vec3 Normal;
+in vec3 curPos;
 
 uniform sampler2D tex0;
 
+// light
+uniform vec4 lightColor;
+uniform vec3 lightPos;
 
 void main()
 {
-	//FragColor = vec4(color, 1.0f);
-	FragColor = texture(tex0, texCoord);
+	// ambient
+	float ambient = 0.05f;
+
+	vec3 normal = normalize(Normal);
+	vec3 lightDirection = normalize(curPos - lightPos);
+
+	float defuse = max(dot(normal, lightDirection), 0.0f);
+
+	FragColor = texture(tex0, texCoord) * lightColor * (ambient + defuse);
 }
