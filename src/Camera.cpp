@@ -78,9 +78,10 @@ void Camera::Input(GLFWwindow* window)
 	}
 }
 
-void Camera::Use(Shader& shader, const GLchar* cameraUniform)
+void Camera::Use(Shader& shader, const GLchar* cameraMatrixUniform, const GLchar* cameraPositionUniform)
 {
 	glm::mat4 view = glm::mat4(1.0f);
 	view = glm::lookAt(Position, Position + Orientation, Up);
-	shader.SetUniformMat4f(cameraUniform, m_proj * view);
+	shader.SetUniformMat4f(cameraMatrixUniform, m_proj * view);
+	shader.SetUniform3f(cameraPositionUniform, Position.x, Position.y, Position.z);
 }

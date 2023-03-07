@@ -3,6 +3,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <vector>
+
 class IndexBuffer
 {
 public:
@@ -11,7 +13,7 @@ public:
 
 
 	// Method
-	IndexBuffer(GLsizeiptr size, const void* data, GLenum usage);
+	IndexBuffer(std::vector<GLuint> indices, GLenum usage = GL_STATIC_DRAW);
 	~IndexBuffer();
 
 	void Bind() const;

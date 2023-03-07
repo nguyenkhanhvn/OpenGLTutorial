@@ -23,32 +23,32 @@ static int height = 800;
 
 
 // Vertices coordinates
-GLfloat vertices[] =
-{ //     COORDINATES     /        COLORS          /    TexCoord   /        NORMALS       //
-	-0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f, 	 0.0f, 0.0f,      0.0f, -1.0f, 0.0f, // Bottom side
-	-0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,	 0.0f, 5.0f,      0.0f, -1.0f, 0.0f, // Bottom side
-	 0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,	 5.0f, 5.0f,      0.0f, -1.0f, 0.0f, // Bottom side
-	 0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f,	 5.0f, 0.0f,      0.0f, -1.0f, 0.0f, // Bottom side
+static std::vector<Vertex> vertices =
+{ //     COORDINATES		/        NORMALS		/        COLORS				/    TexCoord	//
+	{glm::vec3(-0.5f, 0.0f,  0.5f),		glm::vec3(0.0f, -1.0f, 0.0f),		glm::vec3(0.83f, 0.70f, 0.44f), 	glm::vec2(0.0f, 0.0f)},		// Bottom side
+	{glm::vec3(-0.5f, 0.0f, -0.5f),		glm::vec3(0.0f, -1.0f, 0.0f),		glm::vec3(0.83f, 0.70f, 0.44f),		glm::vec2(0.0f, 5.0f)},		// Bottom side
+	{glm::vec3( 0.5f, 0.0f, -0.5f),		glm::vec3(0.0f, -1.0f, 0.0f),		glm::vec3(0.83f, 0.70f, 0.44f),		glm::vec2(5.0f, 5.0f)},		// Bottom side
+	{glm::vec3( 0.5f, 0.0f,  0.5f),		glm::vec3(0.0f, -1.0f, 0.0f),		glm::vec3(0.83f, 0.70f, 0.44f),		glm::vec2(5.0f, 0.0f)},		// Bottom side
 
-	-0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f, 	 0.0f, 0.0f,     -0.8f, 0.5f,  0.0f, // Left Side
-	-0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,	 5.0f, 0.0f,     -0.8f, 0.5f,  0.0f, // Left Side
-	 0.0f, 0.8f,  0.0f,     0.92f, 0.86f, 0.76f,	 2.5f, 5.0f,     -0.8f, 0.5f,  0.0f, // Left Side
+	{glm::vec3(-0.5f, 0.0f,  0.5f),		glm::vec3(0.8f, 0.5f,  0.0f),		glm::vec3(0.83f, 0.70f, 0.44f), 	glm::vec2(0.0f, 0.0f)},		// Left Side
+	{glm::vec3(-0.5f, 0.0f, -0.5f),		glm::vec3(0.8f, 0.5f,  0.0f),		glm::vec3(0.83f, 0.70f, 0.44f),		glm::vec2(5.0f, 0.0f)},		// Left Side
+	{glm::vec3( 0.0f, 0.8f,  0.0f),		glm::vec3(0.8f, 0.5f,  0.0f),		glm::vec3(0.92f, 0.86f, 0.76f),		glm::vec2(2.5f, 5.0f)},		// Left Side
 
-	-0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,	 5.0f, 0.0f,      0.0f, 0.5f, -0.8f, // Non-facing side
-	 0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,	 0.0f, 0.0f,      0.0f, 0.5f, -0.8f, // Non-facing side
-	 0.0f, 0.8f,  0.0f,     0.92f, 0.86f, 0.76f,	 2.5f, 5.0f,      0.0f, 0.5f, -0.8f, // Non-facing side
+	{glm::vec3(-0.5f, 0.0f, -0.5f),		glm::vec3(0.0f, 0.5f, -0.8f),		glm::vec3(0.83f, 0.70f, 0.44f),		glm::vec2(5.0f, 0.0f)},		// Non-facing side
+	{glm::vec3( 0.5f, 0.0f, -0.5f),		glm::vec3(0.0f, 0.5f, -0.8f),		glm::vec3(0.83f, 0.70f, 0.44f),		glm::vec2(0.0f, 0.0f)},		// Non-facing side
+	{glm::vec3( 0.0f, 0.8f,  0.0f),		glm::vec3(0.0f, 0.5f, -0.8f),		glm::vec3(0.92f, 0.86f, 0.76f),		glm::vec2(2.5f, 5.0f)},		// Non-facing side
 
-	 0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,	 0.0f, 0.0f,      0.8f, 0.5f,  0.0f, // Right side
-	 0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f,	 5.0f, 0.0f,      0.8f, 0.5f,  0.0f, // Right side
-	 0.0f, 0.8f,  0.0f,     0.92f, 0.86f, 0.76f,	 2.5f, 5.0f,      0.8f, 0.5f,  0.0f, // Right side
+	{glm::vec3( 0.5f, 0.0f, -0.5f),		glm::vec3(0.8f, 0.5f,  0.0f),		glm::vec3(0.83f, 0.70f, 0.44f),		glm::vec2(0.0f, 0.0f)},		// Right side
+	{glm::vec3( 0.5f, 0.0f,  0.5f),		glm::vec3(0.8f, 0.5f,  0.0f),		glm::vec3(0.83f, 0.70f, 0.44f),		glm::vec2(5.0f, 0.0f)},		// Right side
+	{glm::vec3( 0.0f, 0.8f,  0.0f),		glm::vec3(0.8f, 0.5f,  0.0f),		glm::vec3(0.92f, 0.86f, 0.76f),		glm::vec2(2.5f, 5.0f)},		// Right side
 
-	 0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f,	 5.0f, 0.0f,      0.0f, 0.5f,  0.8f, // Facing side
-	-0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f, 	 0.0f, 0.0f,      0.0f, 0.5f,  0.8f, // Facing side
-	 0.0f, 0.8f,  0.0f,     0.92f, 0.86f, 0.76f,	 2.5f, 5.0f,      0.0f, 0.5f,  0.8f  // Facing side
+	{glm::vec3( 0.5f, 0.0f,  0.5f),		glm::vec3(0.0f, 0.5f,  0.8f),		glm::vec3(0.83f, 0.70f, 0.44f),		glm::vec2(5.0f, 0.0f)},		// Facing side
+	{glm::vec3(-0.5f, 0.0f,  0.5f),		glm::vec3(0.0f, 0.5f,  0.8f),		glm::vec3(0.83f, 0.70f, 0.44f), 	glm::vec2(0.0f, 0.0f)},		// Facing side
+	{glm::vec3( 0.0f, 0.8f,  0.0f),		glm::vec3(0.0f, 0.5f,  0.8f),		glm::vec3(0.92f, 0.86f, 0.76f),		glm::vec2(2.5f, 5.0f)},		// Facing side
 };
 
 // Indices for vertices order
-GLuint indices[] =
+static std::vector<GLuint> indices =
 {
 	0, 1, 2, // Bottom side
 	0, 2, 3, // Bottom side
@@ -59,19 +59,19 @@ GLuint indices[] =
 };
 
 
-GLfloat lightVertices[] =
+static std::vector<Vertex> lightVertices =
 { //     COORDINATES     //
-	-0.1f, -0.1f,  0.1f,
-	-0.1f, -0.1f, -0.1f,
-	 0.1f, -0.1f, -0.1f,
-	 0.1f, -0.1f,  0.1f,
-	-0.1f,  0.1f,  0.1f,
-	-0.1f,  0.1f, -0.1f,
-	 0.1f,  0.1f, -0.1f,
-	 0.1f,  0.1f,  0.1f
+	{glm::vec3(-0.1f, -0.1f,  0.1f)},
+	{glm::vec3(-0.1f, -0.1f, -0.1f)},
+	{glm::vec3(0.1f, -0.1f, -0.1f)},
+	{glm::vec3(0.1f, -0.1f,  0.1f)},
+	{glm::vec3(-0.1f,  0.1f,  0.1f)},
+	{glm::vec3(-0.1f,  0.1f, -0.1f)},
+	{glm::vec3(0.1f,  0.1f, -0.1f)},
+	{glm::vec3(0.1f,  0.1f,  0.1f)},
 };
 
-GLuint lightIndices[] =
+static std::vector<GLuint> lightIndices =
 {
 	0, 1, 2,
 	0, 2, 3,
@@ -112,27 +112,30 @@ int main()
 
 	glViewport(0, 0, width, height);
 
-	GLCall(glEnable(GL_BLEND));
-	GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
-	GLCall(glBlendEquation(GL_FUNC_ADD));
+	//GLCall(glEnable(GL_BLEND));
+	//GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+	//GLCall(glBlendEquation(GL_FUNC_ADD));
 	{
 		// Light
 		Shader lightShader("res/shaders/Light.vert.shader", "res/shaders/Light.frag.shader");
 
 		VertexArray lightVa;
-		VertexBuffer lightVb(sizeof(lightVertices), lightVertices, GL_STATIC_DRAW);
+		VertexBuffer lightVb(lightVertices, GL_STATIC_DRAW);
 		VertexBufferLayout lightLayout;
 		lightLayout.Push(GL_FLOAT, 3, GL_FALSE);
+		lightLayout.Push(GL_FLOAT, 3, GL_FALSE);
+		lightLayout.Push(GL_FLOAT, 3, GL_FALSE);
+		lightLayout.Push(GL_FLOAT, 2, GL_FALSE);
 		lightVa.AddBuffer(lightVb, lightLayout);
 
 
-		IndexBuffer lightIb(sizeof(lightIndices), lightIndices, GL_STATIC_DRAW);
+		IndexBuffer lightIb(lightIndices, GL_STATIC_DRAW);
 
 		lightVa.Unbind();
 		lightVb.Unbind();
 		lightIb.Unbind();
 
-		glm::vec4 lightColor = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+		glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 		glm::vec3 lightPos = glm::vec3(0.5f, 0.5f, 0.5f);
 		glm::mat4 lightModel = glm::mat4(1.0f);
 		lightModel = glm::translate(lightModel, lightPos);
@@ -147,23 +150,23 @@ int main()
 		Shader programShader("res/shaders/Program.vert.shader", "res/shaders/Program.frag.shader");
 
 		VertexArray va;
-		VertexBuffer vb(sizeof(vertices), vertices, GL_STATIC_DRAW);
+		VertexBuffer vb(vertices, GL_STATIC_DRAW);
 		VertexBufferLayout layout;
 		layout.Push(GL_FLOAT, 3, GL_FALSE);
 		layout.Push(GL_FLOAT, 3, GL_FALSE);
-		layout.Push(GL_FLOAT, 2, GL_FALSE);
 		layout.Push(GL_FLOAT, 3, GL_FALSE);
+		layout.Push(GL_FLOAT, 2, GL_FALSE);
 		va.AddBuffer(vb, layout);
 
 
-		IndexBuffer ib(sizeof(indices), indices, GL_STATIC_DRAW);
+		IndexBuffer ib(indices, GL_STATIC_DRAW);
 
 		va.Unbind();
 		vb.Unbind();
 		ib.Unbind();
 
-		Texture texture("res/textures/brick.png", GL_TEXTURE_2D, GL_RGBA, GL_UNSIGNED_BYTE);
-		texture.TexUnit(programShader, "tex0", 0);
+		Texture texture("res/textures/planks.png", "diffuse", 0, GL_TEXTURE_2D, GL_RGBA, GL_UNSIGNED_BYTE);
+		Texture textureSpec("res/textures/planksSpec.png", "specular", 1, GL_TEXTURE_2D, GL_RED, GL_UNSIGNED_BYTE);
 
 		glm::vec3 pyramidPos = glm::vec3(0.0f, 0.0f, 0.0f);
 		glm::mat4 pyramidModel = glm::mat4(1.0f);
@@ -193,11 +196,11 @@ int main()
 
 			lightShader.Bind();
 
-			camera.Use(lightShader, "camMatrix");
+			camera.Use(lightShader);
 
 			lightVa.Bind();
 
-			GLCall(glDrawElements(GL_TRIANGLES, sizeof(lightIndices) / sizeof(int), GL_UNSIGNED_INT, 0));
+			GLCall(glDrawElements(GL_TRIANGLES, lightIndices.size(), GL_UNSIGNED_INT, 0));
 
 
 
@@ -205,16 +208,22 @@ int main()
 			programShader.SetUniform1f("scale", scale);
 
 			// rotate pyramid
-			pyramidModel = glm::rotate(pyramidModel, glm::radians(rotationStep), glm::vec3(0.0f, 1.0f, 0.0f));
-			programShader.SetUniformMat4f("model", pyramidModel);
+			if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+			{
+				pyramidModel = glm::rotate(pyramidModel, glm::radians(rotationStep), glm::vec3(0.0f, 1.0f, 0.0f));
+				programShader.SetUniformMat4f("model", pyramidModel);
+			}
 
 			camera.Input(window);
-			camera.Use(programShader, "camMatrix");
+			camera.Use(programShader);
 
+			texture.TexUnit(programShader, "diffuse0");
 			texture.Bind();
+			textureSpec.TexUnit(programShader, "specular0");
+			textureSpec.Bind();
 			va.Bind();
 
-			GLCall(glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(int), GL_UNSIGNED_INT, 0));
+			GLCall(glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0));
 
 
 			GLCall(glfwSwapBuffers(window));

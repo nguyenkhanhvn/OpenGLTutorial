@@ -2,12 +2,12 @@
 
 #include "common.h"
 
-IndexBuffer::IndexBuffer(GLsizeiptr size, const void* data, GLenum usage):
+IndexBuffer::IndexBuffer(std::vector<GLuint> indices, GLenum usage):
 	Id(0)
 {
 	GLCall(glGenBuffers(1, &Id));
 	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Id));
-	GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, usage));
+	GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), usage));
 }
 
 IndexBuffer::~IndexBuffer()

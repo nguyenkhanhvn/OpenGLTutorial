@@ -27,7 +27,7 @@ public:
 
 	void Input(GLFWwindow* window);
 
-	void Use(class Shader& shader, const GLchar* cameraUniform);
+	void Use(class Shader& shader, const GLchar* cameraMatrixUniform = "camMatrix", const GLchar* cameraPositionUniform = "camPos");
 
 private:
 	// Properties
