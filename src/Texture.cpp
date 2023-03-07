@@ -12,6 +12,7 @@ Texture::Texture(const char* path, const char* type, GLuint unit, GLenum texture
 	unsigned char* textureData = stbi_load(path, &m_width, &m_height, &m_numColCh, desiredChannels);
 
 	GLCall(glGenTextures(1, &Id));
+	GLCall(glActiveTexture(GL_TEXTURE0 + m_unit));
 	GLCall(glBindTexture(textureTarget, Id));
 
 	// Configures the type of algorithm that is used to make the image smaller or bigger
@@ -35,11 +36,6 @@ Texture::Texture(const char* path, const char* type, GLuint unit, GLenum texture
 
 }
 
-Texture::~Texture()
-{
-	GLCall(glDeleteTextures(1, &Id));
-}
-
 void Texture::Bind() const
 {
 	GLCall(glActiveTexture(GL_TEXTURE0 + m_unit));
@@ -51,8 +47,14 @@ void Texture::Unbind() const
 	GLCall(glBindTexture(m_textureTarget, 0));
 }
 
-void Texture::TexUnit(class Shader& shader, const GLchar* uniformName)
+void Texture::TexUnit(class Shader& shader, std::string uniformName)
 {
+	GLCall(glActiveTexture(GL_TEXTURE0 + m_unit));
 	shader.Bind();
 	shader.SetUniform1i(uniformName, m_unit);
+}
+
+void Texture::Delete() const
+{
+	GLCall(glDeleteTextures(1, &Id));
 }

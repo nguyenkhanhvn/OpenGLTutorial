@@ -23,10 +23,11 @@ public:
 
 	// Method
 	VertexBuffer(std::vector<Vertex> vertices, GLenum usage = GL_STATIC_DRAW);
-	~VertexBuffer();
 
 	void Bind() const;
 	void Unbind() const;
+
+	void Delete() const;
 
 private:
 	// Properties

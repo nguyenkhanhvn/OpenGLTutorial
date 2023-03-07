@@ -22,11 +22,6 @@ Shader::Shader(const char* vertexShaderPath, const char* fragmentShaderPath):
 	GLCall(glDeleteShader(fs));
 }
 
-Shader::~Shader()
-{
-	glDeleteProgram(Id);
-}
-
 void Shader::Bind() const
 {
 	glUseProgram(Id);
@@ -37,39 +32,44 @@ void Shader::Unbind() const
 	glUseProgram(0);
 }
 
-GLuint Shader::GetUniformLocation(const GLchar* name)
+void Shader::Delete() const
+{
+	glDeleteProgram(Id);
+}
+
+GLuint Shader::GetUniformLocation(std::string name)
 {
 	if (m_uniformLocationCache.find(name) != m_uniformLocationCache.end())
 		return m_uniformLocationCache[name];
 
-	GLCall(GLuint location = glGetUniformLocation(Id, name));
+	GLCall(GLuint location = glGetUniformLocation(Id, name.c_str()));
 	if (location == -1) std::cout << "Warning: uniform " << name << " doesn't exist!" << std::endl;
 
 	m_uniformLocationCache[name] = location;
 	return location;
 }
 
-void Shader::SetUniform1f(const GLchar* name, float value)
+void Shader::SetUniform1f(std::string name, float value)
 {
 	GLCall(glUniform1f(GetUniformLocation(name), value));
 }
 
-void Shader::SetUniform1i(const GLchar* name, int value)
+void Shader::SetUniform1i(std::string name, int value)
 {
 	GLCall(glUniform1i(GetUniformLocation(name), value));
 }
 
-void Shader::SetUniform3f(const GLchar* name, float v0, float v1, float v2)
+void Shader::SetUniform3f(std::string name, float v0, float v1, float v2)
 {
 	GLCall(glUniform3f(GetUniformLocation(name), v0, v1, v2));
 }
 
-void Shader::SetUniform4f(const GLchar* name, float v0, float v1, float v2, float v3)
+void Shader::SetUniform4f(std::string name, float v0, float v1, float v2, float v3)
 {
 	GLCall(glUniform4f(GetUniformLocation(name), v0, v1, v2, v3));
 }
 
-void Shader::SetUniformMat4f(const GLchar* name, const glm::mat4& matrix)
+void Shader::SetUniformMat4f(std::string name, const glm::mat4& matrix)
 {
 	GLCall(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(matrix)));
 }

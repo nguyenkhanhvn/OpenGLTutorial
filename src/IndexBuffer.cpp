@@ -10,11 +10,6 @@ IndexBuffer::IndexBuffer(std::vector<GLuint> indices, GLenum usage):
 	GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), usage));
 }
 
-IndexBuffer::~IndexBuffer()
-{
-	GLCall(glDeleteBuffers(1, &Id));
-}
-
 void IndexBuffer::Bind() const
 {
 	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Id));
@@ -23,4 +18,9 @@ void IndexBuffer::Bind() const
 void IndexBuffer::Unbind() const
 {
 	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
+}
+
+void IndexBuffer::Delete() const
+{
+	GLCall(glDeleteBuffers(1, &Id));
 }

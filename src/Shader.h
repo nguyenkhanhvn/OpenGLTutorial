@@ -16,22 +16,23 @@ public:
 
 	// Method
 	Shader(const char* vertexShaderPath, const char* fragmentShaderPath);
-	~Shader();
 
 	void Bind() const;
 	void Unbind() const;
 
-	GLuint GetUniformLocation(const GLchar* name);
+	void Delete() const;
 
-	void SetUniform1f(const GLchar* name, float value);
-	void SetUniform1i(const GLchar* name, int value);
-	void SetUniform3f(const GLchar* name, float v0, float v1, float v2);
-	void SetUniform4f(const GLchar* name, float v0, float v1, float v2, float v3);
-	void SetUniformMat4f(const GLchar* name, const glm::mat4& matrix);
+	GLuint GetUniformLocation(std::string name);
+
+	void SetUniform1f(std::string name, float value);
+	void SetUniform1i(std::string name, int value);
+	void SetUniform3f(std::string name, float v0, float v1, float v2);
+	void SetUniform4f(std::string name, float v0, float v1, float v2, float v3);
+	void SetUniformMat4f(std::string name, const glm::mat4& matrix);
 
 private:
 	// Properties
-	std::unordered_map<const GLchar*, GLuint> m_uniformLocationCache;
+	std::unordered_map<std::string, GLuint> m_uniformLocationCache;
 
 
 	// Method

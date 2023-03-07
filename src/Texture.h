@@ -17,12 +17,13 @@ public:
 
 	// Method
 	Texture(const char* path, const char* type, GLuint unit, GLenum textureTarget, GLenum format, GLenum pixelType, int desiredChannels = 0);
-	~Texture();
 
 	void Bind() const;
 	void Unbind() const;
 
-	void TexUnit(class Shader& shader, const GLchar* uniformName);
+	void TexUnit(class Shader& shader, std::string uniformName);
+
+	void Delete() const;
 
 private:
 	// Properties

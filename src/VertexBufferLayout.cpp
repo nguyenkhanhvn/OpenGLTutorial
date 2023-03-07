@@ -12,8 +12,8 @@ unsigned int VertexBufferLayoutElement::GetSizeOfType(GLenum type)
 }
 
 
-void VertexBufferLayout::Push(GLenum type, GLint size, GLboolean normalized)
+void VertexBufferLayout::Push(const VertexBufferLayoutElement& layout)
 {
-	m_elements.push_back({ size, type, normalized });
-	m_stride += size * VertexBufferLayoutElement::GetSizeOfType(type);
+	m_elements.push_back(layout);
+	m_stride += layout.size * VertexBufferLayoutElement::GetSizeOfType(layout.type);
 }

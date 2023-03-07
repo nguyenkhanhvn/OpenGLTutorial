@@ -14,10 +14,11 @@ public:
 
 	// Method
 	IndexBuffer(std::vector<GLuint> indices, GLenum usage = GL_STATIC_DRAW);
-	~IndexBuffer();
 
 	void Bind() const;
 	void Unbind() const;
+
+	void Delete() const;
 
 private:
 	// Properties

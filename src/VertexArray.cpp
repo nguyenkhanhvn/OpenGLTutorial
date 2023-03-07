@@ -10,11 +10,6 @@ VertexArray::VertexArray():
 	GLCall(glGenVertexArrays(1, &Id));
 }
 
-VertexArray::~VertexArray()
-{
-	GLCall(glDeleteVertexArrays(1, &Id));
-}
-
 void VertexArray::Bind() const
 {
 	GLCall(glBindVertexArray(Id));
@@ -23,6 +18,11 @@ void VertexArray::Bind() const
 void VertexArray::Unbind() const
 {
 	GLCall(glBindVertexArray(0));
+}
+
+void VertexArray::Delete() const
+{
+	GLCall(glDeleteVertexArrays(1, &Id));
 }
 
 void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout)

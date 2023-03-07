@@ -7,8 +7,8 @@
 
 struct VertexBufferLayoutElement
 {
-	GLint size;
 	GLenum type;
+	GLint size;
 	GLboolean normalized;
 
 	static unsigned int GetSizeOfType(GLenum type);
@@ -22,7 +22,7 @@ public:
 
 
 	// Method
-	void Push(GLenum type, GLint size, GLboolean normalized);
+	void Push(const VertexBufferLayoutElement& layout);
 	
 	inline std::vector<VertexBufferLayoutElement> GetElements() const { return m_elements; }
 	inline GLsizei GetStride() const { return m_stride; }

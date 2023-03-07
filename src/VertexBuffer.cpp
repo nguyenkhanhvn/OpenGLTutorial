@@ -10,11 +10,6 @@ VertexBuffer::VertexBuffer(std::vector<Vertex> vertices, GLenum usage):
 	GLCall(glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), usage));
 }
 
-VertexBuffer::~VertexBuffer()
-{
-	GLCall(glDeleteBuffers(1, &Id));
-}
-
 void VertexBuffer::Bind() const
 {
 	GLCall(glBindBuffer(GL_ARRAY_BUFFER, Id));
@@ -23,4 +18,9 @@ void VertexBuffer::Bind() const
 void VertexBuffer::Unbind() const
 {
 	GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
+}
+
+void VertexBuffer::Delete() const
+{
+	GLCall(glDeleteBuffers(1, &Id));
 }

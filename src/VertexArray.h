@@ -12,10 +12,11 @@ public:
 
 	// Method
 	VertexArray();
-	~VertexArray();
 
 	void Bind() const;
 	void Unbind() const;
+
+	void Delete() const;
 
 	void AddBuffer(const class VertexBuffer& vb, const class VertexBufferLayout& layout);
 
