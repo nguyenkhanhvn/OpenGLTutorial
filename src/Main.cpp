@@ -20,6 +20,8 @@
 #include "Model.h"
 
 
+static std::string title = "Practice OpenGL";
+
 static int width = 800;
 static int height = 800;
 
@@ -99,7 +101,7 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	GLFWwindow* window = glfwCreateWindow(width, height, "Practice OpenGL", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
 
 	if (window == NULL)
 	{
@@ -162,12 +164,26 @@ int main()
 		glEnable(GL_DEPTH_TEST);
 
 
-		// Variables that help the rotation of the pyramid
-		float rotationStep = 0.4f;
-
+		double prevTime = glfwGetTime();
+		double curTime = 0;
+		double timeDiff = 0;
+		unsigned int counter = 0;
 
 		while (!glfwWindowShouldClose(window))
 		{
+			curTime = glfwGetTime();
+			timeDiff = curTime - prevTime;
+			counter++;
+			if (timeDiff >= 1.0 / 30.0)
+			{
+				std::string fps = std::to_string(counter / timeDiff);
+				std::string ms = std::to_string(timeDiff / counter * 1000);
+				glfwSetWindowTitle(window, (title + " - FPS: " + fps + " FPS / " + ms + "ms").c_str());
+				prevTime = curTime;
+				counter = 0;
+			}
+
+
 			GLCall(glClearColor(0.07f, 0.13f, 0.17f, 1.0f));
 			GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
