@@ -1,5 +1,7 @@
 #include "Mesh.h"
 
+#include<glm/gtc/matrix_transform.hpp>
+
 #include <string>
 
 #include "common.h"
@@ -25,7 +27,7 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices, std::vecto
 	m_ib->Unbind();
 }
 
-Mesh::~Mesh()
+void Mesh::Delete() const
 {
 	m_ib->Unbind();
 	m_ib->Delete();
@@ -35,9 +37,21 @@ Mesh::~Mesh()
 	VA.Delete();
 }
 
-void Mesh::Draw(Shader& shader, Camera& camera)
+void Mesh::DrawSimple(Shader& shader, Camera& camera)
 {
 	shader.Bind();
+	VA.Bind();
+
+	camera.Use(shader);
+
+	// Draw the actual mesh
+	GLCall(glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0));
+}
+
+void Mesh::Draw(Shader& shader, Camera& camera, glm::mat4 matrix, glm::vec3 translation, glm::quat rotation, glm::vec3 scale)
+{
+	shader.Bind();
+	VA.Bind();
 
 	unsigned int numDiffuse = 0, numSpecular = 0;
 
@@ -58,7 +72,23 @@ void Mesh::Draw(Shader& shader, Camera& camera)
 	}
 
 	camera.Use(shader);
-	VA.Bind();
 
+	// Initialize matrices
+	glm::mat4 trans = glm::mat4(1.0f);
+	glm::mat4 rot = glm::mat4(1.0f);
+	glm::mat4 sca = glm::mat4(1.0f);
+
+	// Transform the matrices to their correct form
+	trans = glm::translate(trans, translation);
+	rot = glm::mat4_cast(rotation);
+	sca = glm::scale(sca, scale);
+
+	// Push the matrices to the vertex shader
+	shader.SetUniformMat4f("model", matrix);
+	shader.SetUniformMat4f("translation", trans);
+	shader.SetUniformMat4f("rotation", rot);
+	shader.SetUniformMat4f("scale", sca);
+
+	// Draw the actual mesh
 	GLCall(glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0));
 }

@@ -5,7 +5,7 @@
 #include "common.h"
 #include "Shader.h"
 
-Texture::Texture(const char* path, const char* type, GLuint unit, GLenum textureTarget, GLenum format, GLenum pixelType, int desiredChannels):
+Texture::Texture(const char* path, const char* type, GLuint unit, GLenum textureTarget, GLenum pixelType, int desiredChannels):
 	Id(0), Type(type), m_unit(unit), m_textureTarget(textureTarget), m_width(0), m_height(0), m_numColCh(0)
 {
 	stbi_set_flip_vertically_on_load(1);
@@ -23,9 +23,27 @@ Texture::Texture(const char* path, const char* type, GLuint unit, GLenum texture
 	GLCall(glTexParameteri(textureTarget, GL_TEXTURE_WRAP_S, GL_REPEAT));
 	GLCall(glTexParameteri(textureTarget, GL_TEXTURE_WRAP_T, GL_REPEAT));
 
-	GLCall(glTexImage2D(textureTarget, 0, GL_RGBA8, m_width, m_height, 0, format, pixelType, textureData));
+	if (m_numColCh == 4)
+	{
+		GLCall(glTexImage2D(textureTarget, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, pixelType, textureData));
+	}
+	else if (m_numColCh == 3)
+	{
+		GLCall(glTexImage2D(textureTarget, 0, GL_RGBA, m_width, m_height, 0, GL_RGB, pixelType, textureData));
+	}
+	else if (m_numColCh == 1)
+	{
+		GLCall(glTexImage2D(textureTarget, 0, GL_RGBA, m_width, m_height, 0, GL_RED, pixelType, textureData));
+	}
+	else
+	{
+		GLCall(glTexImage2D(textureTarget, 0, GL_RGBA8, m_width, m_height, 0, GL_RGBA, pixelType, textureData));
+	}
 
-	//GLCall(glGenerateMipmap(textureType));
+
+
+
+	GLCall(glGenerateMipmap(textureTarget));
 
 	// Deletes the image data as it is already in the OpenGL Texture object
 	if (textureData)

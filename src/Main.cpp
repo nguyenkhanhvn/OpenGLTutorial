@@ -17,6 +17,7 @@
 #include "Texture.h"
 #include "Camera.h"
 #include "Mesh.h"
+#include "Model.h"
 
 
 static int width = 800;
@@ -128,32 +129,33 @@ int main()
 		lightModel = glm::translate(lightModel, lightPos);
 
 		lightShader.Bind();
-		lightShader.SetUniformMat4f("model", lightModel);
 		lightShader.SetUniform4f("lightColor", lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+		lightShader.SetUniformMat4f("model", lightModel);
 		lightShader.Unbind();
+
 
 
 		// Program
 		Shader programShader("res/shaders/Program.vert.shader", "res/shaders/Program.frag.shader");
 
-		Mesh obj(vertices, indices, {
-			Texture("res/textures/planks.png", "diffuse", 0, GL_TEXTURE_2D, GL_RGBA, GL_UNSIGNED_BYTE),
-			Texture("res/textures/planksSpec.png", "specular", 1, GL_TEXTURE_2D, GL_RED, GL_UNSIGNED_BYTE),
-			});
-
-		//Texture texture("res/textures/planks.png", "diffuse", 0, GL_TEXTURE_2D, GL_RGBA, GL_UNSIGNED_BYTE);
-		//Texture textureSpec("res/textures/planksSpec.png", "specular", 1, GL_TEXTURE_2D, GL_RED, GL_UNSIGNED_BYTE);
-
-		glm::vec3 pyramidPos = glm::vec3(0.0f, 0.0f, 0.0f);
-		glm::mat4 pyramidModel = glm::mat4(1.0f);
-		pyramidModel = glm::translate(pyramidModel, pyramidPos);
 
 		programShader.Bind();
-		programShader.SetUniformMat4f("model", pyramidModel);
 		programShader.SetUniform4f("lightColor", lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 		programShader.SetUniform3f("lightPos", lightPos.x, lightPos.y, lightPos.z);
 
-		Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
+		Camera camera(width, height, glm::vec3(0.0f, 0.0f, 1.0f));
+
+		Model model("res/models/sword/scene.gltf");
+
+		Mesh obj(vertices, indices, {
+			Texture("res/textures/planks.png", "diffuse", 0),
+			Texture("res/textures/planksSpec.png", "specular", 1),
+			});
+
+
+		glm::vec3 pyramidPos = glm::vec3(1.0f, 0.0f, 0.0f);
+		glm::mat4 pyramidModel = glm::mat4(1.0f);
+		pyramidModel = glm::translate(pyramidModel, pyramidPos);
 
 
 		// Enables the Depth Buffer
@@ -163,32 +165,20 @@ int main()
 		// Variables that help the rotation of the pyramid
 		float rotationStep = 0.4f;
 
-		float scale = 1.0f;
-		programShader.Bind();
-		programShader.SetUniform1f("scale", scale);
-		programShader.Unbind();
 
 		while (!glfwWindowShouldClose(window))
 		{
 			GLCall(glClearColor(0.07f, 0.13f, 0.17f, 1.0f));
 			GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
-			lightMesh.Draw(lightShader, camera);
-
-
-			programShader.Bind();
-			// rotate pyramid
-			if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
-			{
-				programShader.Bind();
-				pyramidModel = glm::rotate(pyramidModel, glm::radians(rotationStep), glm::vec3(0.0f, 1.0f, 0.0f));
-				programShader.SetUniformMat4f("model", pyramidModel);
-			}
+			lightMesh.DrawSimple(lightShader, camera);
 
 			camera.Input(window);
 			
-			obj.Draw(programShader, camera);
+			model.Draw(programShader, camera, 0.01f);
 
+
+			obj.Draw(programShader, camera, pyramidModel);
 
 			GLCall(glfwSwapBuffers(window));
 

@@ -16,7 +16,7 @@ public:
 
 
 	// Method
-	Texture(const char* path, const char* type, GLuint unit, GLenum textureTarget, GLenum format, GLenum pixelType, int desiredChannels = 0);
+	Texture(const char* path, const char* type, GLuint unit, GLenum textureTarget = GL_TEXTURE_2D, GLenum pixelType = GL_UNSIGNED_BYTE, int desiredChannels = 0);
 
 	void Bind() const;
 	void Unbind() const;
