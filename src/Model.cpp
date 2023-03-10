@@ -24,12 +24,12 @@ void Model::Draw(Shader& shader, Camera& camera)
 	}
 }
 
-void Model::Draw(Shader& shader, Camera& camera, float scale)
+void Model::Draw(Shader& shader, Camera& camera, glm::vec3 translation, glm::quat rotation, glm::vec3 scale)
 {
 	// Go over all meshes and draw each one
 	for (unsigned int i = 0; i < Meshes.size(); i++)
 	{
-		Meshes[i].Mesh::Draw(shader, camera, m_matricesMeshes[i], glm::vec3(0.0f, 0.0f, 0.0f), glm::quat(1.0f, 0.0f, 0.0f, 0.0f), glm::vec3(scale, scale, scale));
+		Meshes[i].Mesh::Draw(shader, camera, m_matricesMeshes[i], translation, rotation, scale);
 	}
 }
 

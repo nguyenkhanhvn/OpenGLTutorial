@@ -5,6 +5,7 @@
 #include<glm/gtx/rotate_vector.hpp>
 #include<glm/gtx/vector_angle.hpp>
 
+#include "common.h"
 #include "Shader.h"
 
 Camera::Camera(GLsizei width, GLsizei height, glm::vec3 postion, glm::vec3 orientation, glm::vec3 up, float FOVdeg, float nearPlane, float farPlane):
@@ -51,8 +52,9 @@ void Camera::Input(GLFWwindow* window)
 	{
 		if (m_firstClick) {
 			m_firstClick = false;
-			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-			glfwSetCursorPos(window, Width / 2, Height / 2);
+			std::cout << "check"<<std::endl;
+			GLCall(glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN));
+			GLCall(glfwSetCursorPos(window, Width / 2, Height / 2));
 		}
 
 		double mouseX, mouseY;

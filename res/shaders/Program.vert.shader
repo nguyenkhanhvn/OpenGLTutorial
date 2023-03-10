@@ -27,9 +27,9 @@ uniform mat4 scale;
 
 void main()
 {
-	curPos = (model * translation * -rotation * scale * vec4(aPos, 1.0f)).xyz;
+	curPos = (model * translation * rotation * scale * vec4(aPos, 1.0f)).xyz;
 	Normal = vec3(model * vec4(aNormal, 0.0));
-	texCoord = mat2(0.0f, -1.0f, 1.0f, 0.0f) * aTex;
+	texCoord = /*mat2(0.0f, -1.0f, 1.0f, 0.0f) **/ aTex;
 
 	// Outputs the positions/coordinates of all vertices
 	gl_Position = camMatrix * vec4(curPos, 1.0f);
